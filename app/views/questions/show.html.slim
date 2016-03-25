@@ -4,12 +4,18 @@ html
     title Show Question
 
   body
-    h1 New Question
+    h1 The question is:
 
     #content
       p Here is your question:
       = @question.title
       br
       = @question.body
-      h2 Answers
-      
+      h2 Answers:
+      - @question.answers.each do |answer|
+        = answer.body
+        br
+
+      = button_to "Add Answer", new_question_answer_path(@question), method: :get
+      br
+			= link_to 'Back', questions_path

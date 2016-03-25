@@ -1,0 +1,9 @@
+h1 Question list
+
+- @questions.each do |question|
+	  h2= question.title
+	  br
+	  p= question.body
+
+= button_to "Ask a question", new_question_path, method: :get
+end

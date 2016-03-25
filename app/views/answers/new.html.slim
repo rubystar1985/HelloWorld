@@ -4,14 +4,15 @@ html
     title Type your answer
 
   body
-    h1 Type your answer 
+    h1 Type your answer
 
     #content
       p Please write your answer below:
-      = @answer.question_id
-      = form_for(@answer, method: 'POST', url: "/questions/#{@answer.question_id}/answers") do |f|
-			    = f.label :body
+      = form_for [@question, @answer] do |f|
+			    = f.hidden_field :question_id
 			    br
 			    = f.text_area :body
 			    br
 			    = f.submit
+			    br
+			    = link_to 'Back', _back_url()
