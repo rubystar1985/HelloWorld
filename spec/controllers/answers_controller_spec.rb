@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   describe 'GET #new' do
+    sign_in_user
+
     before { get :new, question_id: question }
     it 'assigns a new Answer to @answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
@@ -14,6 +16,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    sign_in_user
+
     context 'with valid attributes' do
       let (:answer) { build :answer, question_id: question }
       it 'saves the new answer in the database' do

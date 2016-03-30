@@ -9,6 +9,7 @@ html
     #content
       p Please write your answer below:
       = form_for [@question, @answer] do |f|
+        = f.label :body
         = f.text_area :body
         br
         = f.submit
