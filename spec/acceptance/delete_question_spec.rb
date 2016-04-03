@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Delete question', %q{
   In order to remove wrong question
-  As an authorizesed user
+  As an author
   I want to be able to delete my question
 } do
 
@@ -21,7 +21,7 @@ feature 'Delete question', %q{
     expect(page).to have_content 'Your question successfully deleted.'
   end
 
-  scenario "Authorizesed user tries to deletes other user's question" do
+  scenario "Authorizesed user tries to delete other user's question" do
     sign_in(user)
 
     visit question_path other_user_question
@@ -29,7 +29,7 @@ feature 'Delete question', %q{
     expect(page).not_to have_content 'Delete question'
   end
 
-  scenario 'Non-authorizesed user tries to deletes question' do
+  scenario 'Non-authorizesed user tries to delete question' do
     visit question_path question
 
     expect(page).not_to have_content 'Delete question'

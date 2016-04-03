@@ -11,6 +11,7 @@ html
       = form_for [@question, @answer] do |f|
         = f.label :body
         = f.text_area :body
+        = f.hidden_field :user_id, value: current_user.id
         br
         = f.submit
         br

@@ -16,6 +16,11 @@ class AnswersController < ApplicationController
     end
   end
 
+  def destroy
+    @answer.destroy
+    redirect_to @question, notice: 'Your answer successfully deleted.'
+  end
+
   private
 
   def load_question
@@ -27,6 +32,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, :user_id)
   end
 end
