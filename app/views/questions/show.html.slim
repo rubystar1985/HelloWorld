@@ -19,4 +19,7 @@ html
 
       = button_to "Add Answer", new_question_answer_path(@question), method: :get
       br
+      - if (@question.user == current_user)
+        = button_to "Delete question", question_path(@question.id), method: :delete
+      br
 			= link_to 'Back', questions_path
