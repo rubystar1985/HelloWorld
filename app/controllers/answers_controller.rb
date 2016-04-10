@@ -1,14 +1,10 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
-  before_action :load_question, only: [:new, :create]
-
-
-  def new
-    @answer = @question.answers.new
-  end
+  before_action :load_question, only: [:new, :create, :destroy]
+  before_action :load_answer, only: :destroy
 
   def create
-    @answer = @question.answers.new(answer_params)
+    @answer = @question.answers.new answer_params
     if @answer.save
       redirect_to @question, notice: 'Your answer successfully saved.'
     else
@@ -17,8 +13,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.destroy
-    redirect_to @question, notice: 'Your answer successfully deleted.'
+    if user_signed_in? and current_user.author_of?(@answer)
+      @answer.destroy
+      redirect_to @question, notice: 'Your answer successfully deleted.'
+    else
+      redirect_to @question, notice: 'You can delete only your own answer.'
+    end
   end
 
   private
@@ -32,6 +32,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, :user_id)
+    params.require(:answer).permit(:body).merge(user_id: current_user.id)
   end
 end

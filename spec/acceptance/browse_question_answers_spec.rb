@@ -7,8 +7,8 @@ feature 'Browse question and its answer', %q{
 } do
 
   given(:user) { create(:user) }
-  let(:question) { create(:question) }
-  let!(:answer) { create(:answer, question: question) }
+  let(:question) { create(:question, user_id: user.id) }
+  let!(:answers) { create_list(:answer, 2, question: question, user_id: user.id) }
 
   scenario 'Authorizesed user browses question and its answer' do
     sign_in(user)
@@ -17,7 +17,8 @@ feature 'Browse question and its answer', %q{
 
     expect(page).to have_content question.title
     expect(page).to have_content question.body
-    expect(page).to have_content question.answers.first.body
+    expect(page).to have_content answers[0].body
+    expect(page).to have_content answers[1].body
   end
 
   scenario 'Non-authorizesed user browses question and its answer' do
@@ -25,7 +26,8 @@ feature 'Browse question and its answer', %q{
 
     expect(page).to have_content question.title
     expect(page).to have_content question.body
-    expect(page).to have_content question.answers.first.body
+    expect(page).to have_content answers[0].body
+    expect(page).to have_content answers[1].body
   end
 end
 

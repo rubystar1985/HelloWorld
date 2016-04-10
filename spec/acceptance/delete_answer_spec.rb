@@ -19,6 +19,7 @@ feature 'Delete answer', %q{
     click_on 'Delete answer'
 
     expect(page).to have_content 'Your answer successfully deleted.'
+    expect(page).not_to have_content answer.body
   end
 
   scenario "Authorizesed user tries to delete other user's answer" do

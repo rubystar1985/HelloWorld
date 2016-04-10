@@ -15,13 +15,20 @@ html
       h2 Answers:
       - @question.answers.each do |answer|
         = answer.body
-        - if (answer.user == current_user)
+        - if user_signed_in? and (!answer.new_record?) and current_user.author_of?(answer)
           = button_to "Delete answer", question_answer_path(@question, answer), method: :delete
-        br
-
-      = button_to "Add Answer", new_question_answer_path(@question), method: :get
       br
-      - if (@question.user == current_user)
+      - if user_signed_in? and current_user.author_of?(@question)
         = button_to "Delete question", question_path(@question), method: :delete
       br
 			= link_to 'Back', questions_path
+
+      br
+      p Please write your answer below:
+      = form_for [@question, @answer] do |f|
+        = f.label :body
+        = f.text_area :body
+        br
+        = f.submit
+        br
+          = link_to 'Back', _back_url()

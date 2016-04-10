@@ -6,4 +6,8 @@ class User < ActiveRecord::Base
 
   has_many :questions
   has_many :answers
+
+  def author_of? question_or_answer
+    question_or_answer.user_id == id
+  end
 end
