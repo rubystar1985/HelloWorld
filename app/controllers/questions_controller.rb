@@ -18,7 +18,7 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(question_params)
+    @question = Question.new(question_params.merge(user_id: current_user.id))
 
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
@@ -36,7 +36,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if user_signed_in? and current_user.author_of?(@question)
+    if user_signed_in? && current_user.author_of?(@question)
       @question.destroy
       redirect_to questions_path, notice: 'Your question successfully deleted.'
     else
@@ -51,6 +51,6 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body).merge(user_id: current_user.id)
+    params.require(:question).permit(:title, :body)
   end
 end

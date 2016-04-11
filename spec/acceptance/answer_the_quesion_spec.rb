@@ -11,12 +11,11 @@ feature 'Answer the question', %q{
 
   scenario 'Authorizesed user answers the question' do
     sign_in(user)
-
     visit question_path question
     fill_in 'answer_body', with: 'my answer text'
     click_on 'Create Answer'
     expect(page).to have_content 'Your answer successfully saved.'
-    expect(Answer.where(user_id: user.id).count).to eq 1
+    expect(page).to have_content 'my answer text'
   end
 
   scenario 'Non-authorizesed user tries to creates question' do
@@ -24,7 +23,6 @@ feature 'Answer the question', %q{
     fill_in 'answer_body', with: 'my answer text'
     click_on 'Create Answer'
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
-    expect(Answer.where(user_id: user.id).count).to eq 0
   end
 end
 

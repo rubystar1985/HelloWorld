@@ -11,10 +11,10 @@ RSpec.describe User do
   let(:answer) { create(:answer, question: question, user: author) }
 
   it "author_of? returns true for author of answer" do
-    author.author_of?(answer).should eql(true)
+    expect(author.author_of?(answer)).to eq(true)
   end
 
   it "author_of? returns false for non-author of answer" do
-    non_author.author_of?(answer).should eql(false)
+    expect(non_author.author_of?(answer)).to eq(false)
   end
 end

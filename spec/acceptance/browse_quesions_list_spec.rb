@@ -7,7 +7,7 @@ feature 'Browse questions list', %q{
 } do
 
   given(:user) { create(:user) }
-  let!(:questions) { create_list(:question, 2, user_id: user.id) }
+  let!(:questions) { create_list(:question, 2, user: user) }
 
   scenario 'Authorizesed user browses questions list' do
     sign_in(user)
@@ -16,10 +16,10 @@ feature 'Browse questions list', %q{
 
     expect(page).to have_content 'Questions list'
     expect(page).to have_content 'Ask question'
-    expect(page).to have_content questions[0].title
-    expect(page).to have_content questions[0].body
-    expect(page).to have_content questions[1].title
-    expect(page).to have_content questions[1].body
+    questions.each do |question|
+      expect(page).to have_content question.title
+      expect(page).to have_content question.body
+    end
   end
 
   scenario 'Non-authorizesed user browses questions list' do
@@ -27,10 +27,10 @@ feature 'Browse questions list', %q{
 
     expect(page).to have_content 'Questions list'
     expect(page).to have_content 'Ask question'
-    expect(page).to have_content questions[0].title
-    expect(page).to have_content questions[0].body
-    expect(page).to have_content questions[1].title
-    expect(page).to have_content questions[1].body
+    questions.each do |question|
+      expect(page).to have_content question.title
+      expect(page).to have_content question.body
+    end
   end
 end
 

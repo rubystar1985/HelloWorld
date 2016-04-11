@@ -14,11 +14,12 @@ html
       = @question.body
       h2 Answers:
       - @question.answers.each do |answer|
-        = answer.body
-        - if user_signed_in? and (!answer.new_record?) and current_user.author_of?(answer)
-          = button_to "Delete answer", question_answer_path(@question, answer), method: :delete
+        - if answer.persisted?
+          = answer.body
+          - if user_signed_in? && current_user.author_of?(answer)
+            = button_to "Delete answer", question_answer_path(@question, answer), method: :delete
       br
-      - if user_signed_in? and current_user.author_of?(@question)
+      - if user_signed_in? && current_user.author_of?(@question)
         = button_to "Delete question", question_path(@question), method: :delete
       br
 			= link_to 'Back', questions_path
