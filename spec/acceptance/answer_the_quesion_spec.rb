@@ -13,7 +13,7 @@ feature 'Answer the question', %q{
     sign_in(user)
     visit question_path question
     fill_in 'answer_body', with: 'my answer text'
-    click_on 'Create Answer'
+    click_on 'Create'
     expect(page).to have_content 'Your answer successfully saved.'
     expect(page).to have_content 'my answer text'
   end
@@ -21,7 +21,7 @@ feature 'Answer the question', %q{
   scenario 'Non-authorizesed user tries to creates question' do
     visit question_path question
     fill_in 'answer_body', with: 'my answer text'
-    click_on 'Create Answer'
+    click_on 'Create'
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 end

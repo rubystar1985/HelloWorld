@@ -10,27 +10,27 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid attributes' do
       let(:answer) { build :answer, question_id: question }
       it 'saves the new answer associated with question in the database' do
-        expect { post :create, question_id: question, answer: answer.attributes }.to change{ question.answers.reload.size }.by(1)
+        expect { post :create, question_id: question, answer: answer.attributes, format: :js }.to change{ question.answers.reload.size }.by(1)
       end
 
       it 'saves the new answer associated with question in the database' do
-        expect { post :create, question_id: question, answer: answer.attributes}.to change{ @user.answers.reload.size }.by(1)
+        expect { post :create, question_id: question, answer: answer.attributes, format: :js }.to change{ @user.answers.reload.size }.by(1)
       end
 
-      it 'redirect to show view' do
-      post :create, question_id: question, answer: answer.attributes
-        expect(response).to redirect_to question_path(assigns(:question))
+      it 'render create template' do
+      post :create, question_id: question, answer: answer.attributes, format: :js
+        expect(response).to render_template :create
       end
     end
 
     context 'with invalid attributes' do
       let (:answer) { build :invalid_answer, question_id: question.id }
         it 'does not save the answer' do
-        expect { post :create, question_id: question, answer: answer.attributes }.to_not change(Answer, :count)
+        expect { post :create, question_id: question, answer: answer.attributes, format: :js }.to_not change(Answer, :count)
       end
-      it 're-redirect new view' do
-        post :create, question_id: question, answer: answer.attributes
-        expect(response).to render_template :new
+      it 'render create template' do
+        post :create, question_id: question, answer: answer.attributes, format: :js
+        expect(response).to render_template :create
       end
     end
   end
@@ -42,11 +42,11 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'when author' do
       it 'deletes his own answer in the database' do
-        expect { delete :destroy, question_id: question, id: answer }.to change{ @user.answers.reload.size }.by(-1)
+        expect { delete :destroy, question_id: question, id: answer, format: :js }.to change{ @user.answers.reload.size }.by(-1)
       end
-      it 'redirect to show view' do
-        post :create, question_id: question, answer: answer.attributes
-        expect(response).to redirect_to question_path(assigns(:question))
+      it 'render destroy template' do
+        post :destroy, question_id: question, id: answer, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
@@ -54,11 +54,11 @@ RSpec.describe AnswersController, type: :controller do
       let!(:other_user) { create(:user) }
       let!(:other_user_answer) { create(:answer, question_id: question.id, user_id: other_user.id) }
       it 'deletes his own answer in the database' do
-        expect { delete :destroy, question_id: question, id: other_user_answer }.not_to change(Answer, :count)
+        expect { delete :destroy, question_id: question, id: other_user_answer, format: :js }.not_to change(Answer, :count)
       end
-      it 'redirect to show view' do
-        delete :destroy, question_id: question, id: other_user_answer
-        expect(response).to redirect_to question_path(assigns(:question))
+      it 'render destroy template' do
+        delete :destroy, question_id: question, id: other_user_answer, format: :js
+        expect(response).to render_template :destroy
       end
     end
   end

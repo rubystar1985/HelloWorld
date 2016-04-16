@@ -4,12 +4,8 @@ class AnswersController < ApplicationController
   before_action :load_answer, only: :destroy
 
   def create
-    @answer = @question.answers.new(answer_params.merge(user: current_user))
-    if @answer.save
-      redirect_to @question, notice: 'Your answer successfully saved.'
-    else
-	    render :new
-    end
+    @question = Question.find(params[:question_id])
+    @question.answers.create(answer_params.merge(user: current_user))
   end
 
   def destroy
@@ -19,7 +15,7 @@ class AnswersController < ApplicationController
     else
       flash_message = 'You can delete only your own answer.'
     end
-    redirect_to @question, notice: flash_message
+    @question
   end
 
   private
