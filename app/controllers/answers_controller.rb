@@ -15,7 +15,6 @@ class AnswersController < ApplicationController
     else
       flash_message = 'You can delete only your own answer.'
     end
-    @question
   end
 
   private

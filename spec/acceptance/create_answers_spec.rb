@@ -21,4 +21,11 @@ feature 'User answer', %q{
       expect(page).to have_content 'My answer'
     end
   end
+
+  scenario 'Non-authorizesed user tries to creates question' do
+    visit question_path question
+    fill_in 'answer_body', with: 'my answer text'
+    click_on 'Create'
+    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+  end
 end
