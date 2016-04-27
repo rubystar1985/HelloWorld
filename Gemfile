@@ -44,6 +44,7 @@ group :development, :test do
   gem 'pry'
   gem 'database_cleaner'
   gem 'capybara-webkit'
+  gem 'jquery-turbolinks'
 end
 
 group :test do
