@@ -5,7 +5,6 @@
 <% else %>
   $('.answers').html('<%= j render @answer %>');
   $('.edit-answer-link').click(function(e) {
-    console.log('update js')
     e.preventDefault()
     $(this).hide();
     answer_id = $(this).data('answerId');

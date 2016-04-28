@@ -34,8 +34,9 @@ feature 'Answer editing', %q{
       within '.answers' do
         fill_in 'Answer', with: 'edited answer'
       end
+
       click_on 'Save'
-      save_and_open_page
+
       expect(page).to_not have_content answer.body
       expect(page).to have_content 'edited answer'
       expect(page).to_not have_selector '.answers textarea'
