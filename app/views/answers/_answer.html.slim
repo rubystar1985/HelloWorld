@@ -3,7 +3,7 @@
   - if user_signed_in? && current_user.author_of?(answer)
     = button_to "Delete answer", question_answer_path(@question, answer), method: :delete, remote: true
 
-  - if user_signed_in? and answer.persisted?
+  - if user_signed_in? and answer.persisted? and answer.user == current_user
     p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
     p
       = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}"} do |f|

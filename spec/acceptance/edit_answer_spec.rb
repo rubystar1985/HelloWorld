@@ -7,6 +7,7 @@ feature 'Answer editing', %q{
 } do
 
   given(:user) { create(:user) }
+  given(:another_user) { create(:user) }
   given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
@@ -41,9 +42,18 @@ feature 'Answer editing', %q{
       expect(page).to have_content 'edited answer'
       expect(page).to_not have_selector '.answers textarea'
     end
+  end
+
+  describe 'Another user' do
+    before do
+      sign_in(another_user)
+      visit question_path(question)
+    end
 
     scenario "Authenticated user try to edit other user's answer" do
-
+      within '.answers' do
+        expect(page).not_to have_link 'Edit'
+      end
     end
   end
 end
