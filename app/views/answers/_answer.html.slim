@@ -1,7 +1,12 @@
 = div_for answer do
+  - if answer.is_best?
+    p= 'Best answer!'
   p= answer.body
   - if user_signed_in? && current_user.author_of?(answer)
     = button_to "Delete answer", question_answer_path(@question, answer), method: :delete, remote: true
+
+    - if current_user.author_of?(@question) && !answer.is_best?
+      = button_to "Set as best answer", question_answer_set_best_path(@question, answer), method: :patch, remote: true, class: 'b-set-as-best'
 
   - if user_signed_in? and answer.persisted? and answer.user == current_user
     p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }

@@ -45,6 +45,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'capybara-webkit'
   gem 'jquery-turbolinks'
+  gem 'bootstrap-sass', '~> 3.3.6'
 end
 
 group :test do

@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
-  before_action :load_question, only: [:new, :create, :update, :destroy]
+  before_action :load_question, only: [:new, :create, :update, :destroy, :set_best]
   before_action :load_answer, only: [:destroy, :update]
 
   def create
@@ -21,6 +21,15 @@ class AnswersController < ApplicationController
       flash_message = 'Your answer successfully deleted.'
     else
       flash_message = 'You can delete only your own answer.'
+    end
+  end
+
+  def set_best
+    @answer = Answer.find(params[:answer_id])
+    if current_user.author_of?(@answer.question)
+      @answer.set_best
+    else
+      head 403
     end
   end
 

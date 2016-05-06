@@ -5,7 +5,7 @@
   = render @question
 
 .answers
-  = render @question.answers
+  = render @question.answers.best_first
 
 = form_for [@question, @answer], remote: true do |f|
   p
@@ -14,7 +14,3 @@
     .answer-errors
     = f.text_area :body
     = f.submit 'Create'
-
-- # - if user_signed_in? && current_user.author_of?(@question)
-- #   = button_to "Delete question", question_path(@question), method: :delete
-- #   p= link_to 'Edit question', '', class: 'edit-question-link', data: { question_id: @question.id }
