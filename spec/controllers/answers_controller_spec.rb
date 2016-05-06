@@ -56,6 +56,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'deletes his own answer in the database' do
         expect { delete :destroy, question_id: question, id: other_user_answer, format: :js }.not_to change(Answer, :count)
       end
+
       it 'render destroy template' do
         delete :destroy, question_id: question, id: other_user_answer, format: :js
         expect(response).to render_template :destroy
@@ -86,6 +87,41 @@ RSpec.describe AnswersController, type: :controller do
     it 'render update template' do
       patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
       expect(response).to render_template(:update)
+    end
+  end
+
+  describe 'PATCH #set_best' do
+    context 'when author' do
+      sign_in_user
+
+      let(:question_by_current_user) { create(:question, user_id: @user.id) }
+      let!(:answer) { create(:answer, question: question_by_current_user, user_id: @user.id) }
+
+      it 'changes answer attribute is_best to true' do
+        expect { patch :set_best, question_id: question_by_current_user, answer_id: answer, format: :js }
+          .to change{ answer.reload.is_best }.from(false).to(true)
+      end
+    end
+
+    context "when try to set best answer to other user's question" do
+      sign_in_user
+
+      let(:another_user) { create(:user) }
+      let!(:answer) { create(:answer, question: question, user_id: another_user.id) }
+
+      it 'does not change answer attribute is_best' do
+        expect { patch :set_best, question_id: question, answer_id: answer, format: :js }
+          .not_to change{ answer.reload.is_best }
+      end
+    end
+
+    context 'when not authorized' do
+      let!(:answer) { create(:answer, question: question, user_id: user.id) }
+
+      it 'does not change answer attribute is_best' do
+        expect { patch :set_best, question_id: question, answer_id: answer, format: :js }
+          .not_to change{ answer.reload.is_best }
+      end
     end
   end
 end
