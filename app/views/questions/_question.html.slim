@@ -1,5 +1,9 @@
 h1.b-title= @question.title
 p.b-body= @question.body
+p Attachments:
+ul
+  - @question.attachments.each do |a|
+    li= a.file.file.filename
 
 - if user_signed_in? && current_user.author_of?(@question)
   = button_to "Delete question", question_path(@question), method: :delete
