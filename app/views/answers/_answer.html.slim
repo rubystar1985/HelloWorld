@@ -4,8 +4,11 @@
   p= answer.body
 
   ul
-    - answer.attachments.each do |a|
-      li= link_to a.file.identifier, a.file.url
+    - answer.attachments.each do |attachment|
+      li id="attachment_#{attachment.id}"
+        = link_to attachment.file.identifier, attachment.file.url
+        - if user_signed_in? and answer.user == current_user
+          = button_to "Delete attachment", question_answer_attachment_path(@question, answer, attachment), { remote: true, method: :delete, class: 'b-delete-attachment' }
 
   - if user_signed_in? && current_user.author_of?(answer)
     = button_to "Delete answer", question_answer_path(@question, answer), method: :delete, remote: true
