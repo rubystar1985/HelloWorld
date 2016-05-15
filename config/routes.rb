@@ -4,6 +4,8 @@ Rails.application.routes.draw do
     resources :answers do
       patch :set_best
     end
+
+    resources :attachments
   end
 
   root to: 'questions#index'
