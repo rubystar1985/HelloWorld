@@ -5,7 +5,7 @@ ul
   - @question.attachments.each do |attachment|
     li id="attachment_#{attachment.id}"
       = link_to attachment.file.identifier, attachment.file.url
-      - if user_signed_in? and question.user == current_user
+      - if user_signed_in? and current_user.author_of?(question)
         = button_to "Delete attachment", question_attachment_path(@question, attachment), { remote: true, method: :delete, class: 'b-delete-attachment' }
 
 - if user_signed_in? && current_user.author_of?(@question)
