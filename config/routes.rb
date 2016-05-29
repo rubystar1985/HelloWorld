@@ -4,9 +4,11 @@ Rails.application.routes.draw do
     resources :answers do
       patch :set_best
       resources :attachments
+      resources :votes
     end
 
     resources :attachments
+    resources :votes
   end
 
   root to: 'questions#index'

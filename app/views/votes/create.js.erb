@@ -1,0 +1,4 @@
+<% if !(@voteable.nil? && @voteable.voted_by_current_user) %>
+  $('.vote-buttons').hide()
+  $('.vote-count').html('<%= j @voteable.balanced_count.to_s %>');
+<% end %>
