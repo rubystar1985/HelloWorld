@@ -23,3 +23,12 @@
         = f.label :body, "Answer"
         = f.text_area :body
         = f.submit 'Save'
+
+  .votes
+    'Votes:
+    .vote-count
+      = "#{answer.balanced_count}"
+    - if user_signed_in? && answer.persisted? && !@answer.voted_by_current_user
+      .vote-buttons
+        = button_to '+1', question_answer_votes_path(@question, answer, positive: true), method: :post, remote: true
+        = button_to '-1', question_answer_votes_path(@question, answer, positive: false), method: :post, remote: true

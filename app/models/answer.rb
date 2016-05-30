@@ -18,4 +18,15 @@ class Answer < ActiveRecord::Base
       self.update!(is_best: true)
     end
   end
+
+  def balanced_count
+    positive_votes = votes.where(positive: true)
+    negative_votes = votes.where(positive: false)
+
+    @votes_count = positive_votes.count - negative_votes.count
+  end
+
+  def voted_by_current_user
+    votes.where(user_id: user_id).count > 0
+  end
 end
