@@ -7,11 +7,11 @@ ul
       = link_to attachment.file.identifier, attachment.file.url
       - if user_signed_in? and current_user.author_of?(question)
         = button_to "Delete attachment", question_attachment_path(@question, attachment), { remote: true, method: :delete, class: 'b-delete-attachment' }
-.votes
+.question-votes
   'Votes:
   .vote-count
     = "#{@question.balanced_count}"
-  - if user_signed_in? && question.persisted? && !@question.voted_by_current_user
+  - if user_signed_in? && question.persisted? && !@question.voted_by_current_user && !(current_user.author_of?(@question))
     .vote-buttons
       = button_to '+1', question_votes_path(@question, positive: true), method: :post, remote: true
       = button_to '-1', question_votes_path(@question, positive: false), method: :post, remote: true

@@ -24,11 +24,11 @@
         = f.text_area :body
         = f.submit 'Save'
 
-  .votes
+  .answer-votes
     'Votes:
     .vote-count
       = "#{answer.balanced_count}"
-    - if user_signed_in? && answer.persisted? && !@answer.voted_by_current_user
+    - if user_signed_in? && answer.persisted? && !@answer.voted_by_current_user && !(current_user.author_of?(@question))
       .vote-buttons
         = button_to '+1', question_answer_votes_path(@question, answer, positive: true), method: :post, remote: true
         = button_to '-1', question_answer_votes_path(@question, answer, positive: false), method: :post, remote: true

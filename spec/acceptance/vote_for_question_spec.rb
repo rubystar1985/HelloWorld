@@ -18,24 +18,16 @@ feature 'Voting for question', %q{
     expect(page).to have_text 'Votes: 0'
   end
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user tries to vote for his own question' do
     before do
       sign_in(user)
       visit question_path(question)
     end
 
-    scenario 'see links vote for and for against question' do
-      expect(page).to have_selector "input[type=submit][value='+1']"
-      expect(page).to have_selector "input[type=submit][value='-1']"
-      expect(page).to have_text 'Votes: 0'
-    end
-
-    scenario 'vote for question', js: true do
-      click_on '+1'
-
+    scenario 'does not see links vote for and for against question' do
       expect(page).not_to have_selector "input[type=submit][value='+1']"
       expect(page).not_to have_selector "input[type=submit][value='-1']"
-      expect(page).to have_text 'Votes: 1'
+      expect(page).to have_text 'Votes: 0'
     end
   end
 
@@ -43,6 +35,14 @@ feature 'Voting for question', %q{
     before do
       sign_in(another_user)
       visit question_path(question)
+    end
+
+    scenario 'sees vote for question buttons', js: true do
+      click_on '+1'
+
+      expect(page).to have_selector "input[type=submit][value='+1']"
+      expect(page).to have_selector "input[type=submit][value='-1']"
+      expect(page).to have_text 'Votes: 1'
     end
 
     scenario "Authenticated user votes for other user's question", js: true do
